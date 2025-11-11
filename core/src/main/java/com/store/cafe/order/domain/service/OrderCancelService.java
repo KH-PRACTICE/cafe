@@ -6,7 +6,7 @@ import com.store.cafe.order.domain.model.entity.OrderItem;
 import com.store.cafe.payment.domain.event.PaymentEvent;
 import com.store.cafe.payment.domain.model.entity.PaymentOrderHistory;
 import com.store.cafe.payment.domain.service.PaymentGateway;
-import com.store.cafe.payment.domain.service.PaymentHistoryService;
+import com.store.cafe.payment.domain.service.PaymentOrderHistoryService;
 import com.store.cafe.product.domain.service.ProductStockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,7 +21,7 @@ public class OrderCancelService {
 
     private final OrderReadService orderReadService;
     private final ProductStockService productStockService;
-    private final PaymentHistoryService paymentHistoryService;
+    private final PaymentOrderHistoryService paymentOrderHistoryService;
     private final PaymentGateway paymentGateway;
 
     private final ApplicationEventPublisher eventPublisher;
@@ -45,7 +45,7 @@ public class OrderCancelService {
 
     public PaymentResult requestPaymentCancel(Long orderId) {
 
-        PaymentOrderHistory paymentOrderHistory = paymentHistoryService.getSuccessPaymentOrder(orderId);
+        PaymentOrderHistory paymentOrderHistory = paymentOrderHistoryService.getSuccessPaymentOrder(orderId);
 
         PaymentResult paymentResult = paymentGateway.cancelPayment(paymentOrderHistory.getTransactionId(), paymentOrderHistory.getOrderId());
 

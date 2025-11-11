@@ -1,5 +1,6 @@
 package com.store.cafe.order.domain.service;
 
+import com.store.cafe.order.domain.exception.OrderItemNotFoundException;
 import com.store.cafe.order.domain.exception.OrderNotFoundException;
 import com.store.cafe.order.domain.model.entity.Order;
 import com.store.cafe.order.domain.model.entity.OrderItem;
@@ -23,6 +24,12 @@ public class OrderReadService {
     }
 
     public List<OrderItem> getOrderItems(Long orderId) {
-        return orderItemRepository.findByOrderId(orderId);
+        List<OrderItem> orderItems = orderItemRepository.findByOrderId(orderId);
+
+        if (orderItems.isEmpty()) {
+            throw new OrderItemNotFoundException("주문 상품 정보가 없습니다. orderId=" + orderId);
+        }
+
+        return orderItems;
     }
 }

@@ -59,7 +59,6 @@ import java.time.ZonedDateTime;
         return new PaymentOrderHistory(orderId, transactionId, status);
     }
 
-
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = DateUtil.now();

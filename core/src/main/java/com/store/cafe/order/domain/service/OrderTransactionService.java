@@ -66,11 +66,6 @@ public class OrderTransactionService {
     public Order failOrder(Long orderId) {
 
         List<OrderItem> orderItems = orderReadService.getOrderItems(orderId);
-
-        if (orderItems.isEmpty()) {
-            throw new OrderItemNotFoundException("주문 상품 정보가 없습니다. orderId=" + orderId);
-        }
-
         productStockService.restoreStocks(orderItems);
 
         Order order = orderReadService.getOrder(orderId);

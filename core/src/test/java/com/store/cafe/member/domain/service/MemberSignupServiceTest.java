@@ -1,4 +1,4 @@
-package com.store.cafe.domain.service;
+package com.store.cafe.member.domain.service;
 
 import com.store.cafe.member.application.command.MemberSignupCommand;
 import com.store.cafe.member.application.result.MemberSignupResult;

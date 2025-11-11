@@ -1,4 +1,4 @@
-package com.store.cafe.domain.service;
+package com.store.cafe.member.domain.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

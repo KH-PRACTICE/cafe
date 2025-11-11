@@ -8,14 +8,11 @@ import com.store.cafe.product.domain.model.entity.ProductStockRepository;
 import com.store.cafe.product.domain.model.vo.StockDecreaseResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +22,12 @@ public class ProductStockService {
 
     public List<StockDecreaseResult> decreaseStocks(List<OrderItemCommand> commands) {
 
-        Map<Long, ProductStock> stockMap = getProductStockMap(commands.stream()
-                .map(OrderItemCommand::productId));
+        List<Long> productIds = commands.stream()
+                .map(OrderItemCommand::productId)
+                .sorted()
+                .toList();
+
+        Map<Long, ProductStock> stockMap = getProductStockMap(productIds);
 
         return commands.stream()
                 .map(cmd -> {
@@ -42,8 +43,12 @@ public class ProductStockService {
 
     public void restoreStocks(List<OrderItem> orderItems) {
 
-        Map<Long, ProductStock> stockMap = getProductStockMap(orderItems.stream()
-                .map(OrderItem::getProductId));
+        List<Long> productIds = orderItems.stream()
+                .map(OrderItem::getProductId)
+                .sorted()
+                .toList();
+
+        Map<Long, ProductStock> stockMap = getProductStockMap(productIds);
 
         for (OrderItem item : orderItems) {
             ProductStock stock = stockMap.get(item.getProductId());
@@ -53,10 +58,7 @@ public class ProductStockService {
         }
     }
 
-    private Map<Long, ProductStock> getProductStockMap(Stream<Long> orderItems) {
-        List<Long> productIds = orderItems
-                .sorted()
-                .toList();
+    private Map<Long, ProductStock> getProductStockMap(List<Long> productIds) {
 
         List<ProductStock> stocks = productStockRepository.findAllByProductIdInForUpdate(productIds);
 

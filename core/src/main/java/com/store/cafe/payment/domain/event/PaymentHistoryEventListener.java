@@ -1,6 +1,6 @@
 package com.store.cafe.payment.domain.event;
 
-import com.store.cafe.payment.domain.service.PaymentHistoryService;
+import com.store.cafe.payment.domain.service.PaymentOrderHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PaymentHistoryEventListener {
 
-    private final PaymentHistoryService paymentHistoryService;
+    private final PaymentOrderHistoryService paymentOrderHistoryService;
 
     @EventListener
     public void handlePaymentEvent(PaymentEvent event) {
 
-        paymentHistoryService.savePaymentOrder(
+        paymentOrderHistoryService.savePaymentOrder(
                 event.orderId(),
                 event.transactionId(),
                 event.status()

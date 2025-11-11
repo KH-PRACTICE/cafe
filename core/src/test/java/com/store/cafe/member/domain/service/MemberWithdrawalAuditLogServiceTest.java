@@ -1,4 +1,4 @@
-package com.store.cafe.domain.service;
+package com.store.cafe.member.domain.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

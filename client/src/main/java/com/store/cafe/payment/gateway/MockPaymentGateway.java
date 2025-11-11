@@ -39,11 +39,6 @@ public class MockPaymentGateway implements PaymentGateway {
 
     }
 
-    @Override
-    public PaymentStatus getPaymentStatus(Long orderId) {
-        return PaymentStatus.PAYMENT_SUCCESS;
-    }
-
     private String buildTransactionId(Long orderId) {
         return "TXN -" + orderId;
     }
