@@ -21,6 +21,5 @@ public class MemberIdentityRepositoryImpl implements MemberIdentityRepository {
     @Override
     public Optional<MemberIdentity> findByMemberUid(Long memberUid) {
         return jpaRepository.findById(memberUid);
-
     }
 }

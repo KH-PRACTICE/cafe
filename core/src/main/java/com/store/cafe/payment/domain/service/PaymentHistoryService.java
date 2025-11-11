@@ -3,7 +3,7 @@ package com.store.cafe.payment.domain.service;
 import com.store.cafe.payment.domain.enums.PaymentStatus;
 import com.store.cafe.payment.domain.exception.PaymentHistoryNotFoundException;
 import com.store.cafe.payment.domain.model.entity.PaymentOrderHistory;
-import com.store.cafe.payment.domain.model.entity.PaymentOrderRepository;
+import com.store.cafe.payment.domain.model.entity.PaymentOrderHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PaymentHistoryService {
 
-    private final PaymentOrderRepository PaymentOrderRepository;
+    private final PaymentOrderHistoryRepository PaymentOrderRepository;
 
     @Transactional
     public void savePaymentOrder(Long orderId, String transactionId, PaymentStatus status) {
@@ -26,8 +26,8 @@ public class PaymentHistoryService {
         PaymentOrderRepository.save(paymentOrderHistory);
     }
 
-    public PaymentOrderHistory getPaymentOrder(Long orderId) {
-        return PaymentOrderRepository.findByOrderId(orderId)
+    public PaymentOrderHistory getSuccessPaymentOrder(Long orderId) {
+        return PaymentOrderRepository.findByOrderIdAndStatus(orderId, PaymentStatus.PAYMENT_SUCCESS)
                 .orElseThrow(() -> new PaymentHistoryNotFoundException("존재 하지 않는 결제 내역 입니다: " + orderId));
     }
 }

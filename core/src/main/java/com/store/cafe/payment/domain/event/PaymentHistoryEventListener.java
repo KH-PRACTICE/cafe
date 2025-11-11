@@ -4,7 +4,6 @@ import com.store.cafe.payment.domain.service.PaymentHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -14,6 +13,7 @@ public class PaymentHistoryEventListener {
 
     @EventListener
     public void handlePaymentEvent(PaymentEvent event) {
+
         paymentHistoryService.savePaymentOrder(
                 event.orderId(),
                 event.transactionId(),

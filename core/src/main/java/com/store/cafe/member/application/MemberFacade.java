@@ -10,7 +10,7 @@ public interface MemberFacade {
 
     MemberSignupResult signup(MemberSignupCommand command);
 
-    MemberWithdrawalResult withdrawal(MemberWithdrawalCommand command);
+    MemberWithdrawalResult withdrawal(Long memberUid, MemberWithdrawalCommand command);
 
     MemberWithdrawalCancelResult cancelWithdrawal(Long memberUid);
 }

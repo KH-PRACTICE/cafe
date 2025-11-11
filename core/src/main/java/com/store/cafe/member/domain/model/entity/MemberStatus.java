@@ -77,4 +77,8 @@ public class MemberStatus {
 
         this.status = MemberStatusType.ACTIVE;
     }
+
+    public boolean isActive() {
+        return status.isActive();
+    }
 }

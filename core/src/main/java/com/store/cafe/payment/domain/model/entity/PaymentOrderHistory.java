@@ -21,14 +21,14 @@ import java.time.ZonedDateTime;
 @Table(name = "payment_order_history")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentOrderHistory {
+    public class PaymentOrderHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id")
     private Long paymentId;
 
-    @Column(name = "order_id", nullable = false, unique = true)
+    @Column(name = "order_id", nullable = false)
     private Long orderId;
 
     @Column(name = "transaction_id")
@@ -45,10 +45,14 @@ public class PaymentOrderHistory {
     private ZonedDateTime createdAt;
 
     private PaymentOrderHistory(Long orderId, String transactionId, PaymentStatus status) {
+
+        ZonedDateTime now = DateUtil.now();
+
         this.orderId = orderId;
         this.transactionId = transactionId;
         this.status = status;
-        this.createdAt = DateUtil.now();
+        this.updatedAt = now;
+        this.createdAt = now;
     }
 
     public static PaymentOrderHistory of(Long orderId, String transactionId, PaymentStatus status) {

@@ -8,11 +8,11 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.store.cafe.member.application.command.MemberWithdrawalCommand;
 import com.store.cafe.member.application.result.MemberWithdrawalCancelResult;
 import com.store.cafe.member.application.result.MemberWithdrawalResult;
-import com.store.cafe.util.DateUtil;
-import com.store.cafe.util.HashUtil;
+import com.store.cafe.member.domain.exception.CannotWithdrawCancelException;
+import com.store.cafe.member.domain.exception.CannotWithdrawException;
+import com.store.cafe.member.domain.exception.MemberNotFoundException;
 import com.store.cafe.member.domain.model.entity.MemberIdentity;
 import com.store.cafe.member.domain.model.entity.MemberIdentityRepository;
 import com.store.cafe.member.domain.model.entity.MemberStatus;
@@ -22,9 +22,8 @@ import com.store.cafe.member.domain.model.entity.MemberWithdrawalSummary;
 import com.store.cafe.member.domain.model.enums.MemberStatusType;
 import com.store.cafe.member.domain.model.enums.WithdrawalStatus;
 import com.store.cafe.member.domain.service.MemberWithdrawService;
-import com.store.cafe.member.domain.exception.CannotWithdrawCancelException;
-import com.store.cafe.member.domain.exception.CannotWithdrawException;
-import com.store.cafe.member.domain.exception.MemberNotFoundException;
+import com.store.cafe.util.DateUtil;
+import com.store.cafe.util.HashUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,14 +53,12 @@ class MemberWithdrawServiceTest {
     private Long testMemberUid;
     private String testReason;
     private String testLoginId;
-    private MemberWithdrawalCommand testCommand;
 
     @BeforeEach
     void setUp() {
         testMemberUid = 1L;
         testReason = "재가입 예정";
         testLoginId = "testuser123";
-        testCommand = new MemberWithdrawalCommand(testMemberUid, testReason);
     }
 
     @Test
@@ -92,7 +89,7 @@ class MemberWithdrawServiceTest {
             when(memberWithdrawalRepository.save(any(MemberWithdrawalSummary.class)))
                     .thenReturn(savedWithdrawal);
 
-            MemberWithdrawalResult result = memberWithdrawService.withdraw(testCommand, DateUtil.now());
+            MemberWithdrawalResult result = memberWithdrawService.withdraw(testMemberUid, testReason, DateUtil.now());
 
             assertThat(result).isNotNull();
             assertThat(result.memberUid()).isEqualTo(testMemberUid);
@@ -124,7 +121,7 @@ class MemberWithdrawServiceTest {
         when(memberWithdrawalRepository.findByMemberUid(testMemberUid))
                 .thenReturn(Optional.of(existingWithdrawal));
 
-        MemberWithdrawalResult result = memberWithdrawService.withdraw(testCommand, DateUtil.now());
+        MemberWithdrawalResult result = memberWithdrawService.withdraw(testMemberUid, testReason, DateUtil.now());
 
         assertThat(result).isNotNull();
         assertThat(result.memberUid()).isEqualTo(testMemberUid);
@@ -142,7 +139,7 @@ class MemberWithdrawServiceTest {
         when(memberIdentityRepository.findByMemberUid(testMemberUid))
                 .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> memberWithdrawService.withdraw(testCommand, DateUtil.now()))
+        assertThatThrownBy(() -> memberWithdrawService.withdraw(testMemberUid, testReason, DateUtil.now()))
                 .isInstanceOf(MemberNotFoundException.class)
                 .hasMessage("Member not found for memberUid: " + testMemberUid);
     }
@@ -157,7 +154,7 @@ class MemberWithdrawServiceTest {
         when(memberStatusRepository.findByMemberUid(testMemberUid))
                 .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> memberWithdrawService.withdraw(testCommand, DateUtil.now()))
+        assertThatThrownBy(() -> memberWithdrawService.withdraw(testMemberUid, testReason, DateUtil.now()))
                 .isInstanceOf(MemberNotFoundException.class)
                 .hasMessage("Member not found for memberUid: " + testMemberUid);
     }
@@ -176,7 +173,7 @@ class MemberWithdrawServiceTest {
         when(memberStatusRepository.findByMemberUid(testMemberUid))
                 .thenReturn(Optional.of(withdrawProcessStatus));
 
-        assertThatThrownBy(() -> memberWithdrawService.withdraw(testCommand, DateUtil.now()))
+        assertThatThrownBy(() -> memberWithdrawService.withdraw(testMemberUid, testReason, DateUtil.now()))
                 .isInstanceOf(CannotWithdrawException.class)
                 .hasMessage("Cannot withdraw because withdrawal is already in progress");
     }

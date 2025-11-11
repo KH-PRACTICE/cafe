@@ -6,8 +6,9 @@ plugins {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":persistence"))
-    implementation(project(":client"))
+
+    runtimeOnly(project(":persistence"))
+    runtimeOnly(project(":client"))
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")

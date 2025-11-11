@@ -29,10 +29,10 @@ public class MemberFacadeImpl implements MemberFacade {
     }
 
     @Override
-    public MemberWithdrawalResult withdrawal(MemberWithdrawalCommand command) {
+    public MemberWithdrawalResult withdrawal(Long memberUid, MemberWithdrawalCommand command) {
 
-        MemberWithdrawalResult result = memberWithdrawService.withdraw(command, DateUtil.now());
-        publishEvent(command.memberUid(), result.loginIdHash(), WithdrawalStatus.REQUESTED);
+        MemberWithdrawalResult result = memberWithdrawService.withdraw(memberUid, command.reason(), command.requestedAt());
+        publishEvent(memberUid, result.loginIdHash(), WithdrawalStatus.REQUESTED);
 
         return result;
     }

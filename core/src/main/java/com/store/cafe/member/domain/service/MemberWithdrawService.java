@@ -1,9 +1,9 @@
 package com.store.cafe.member.domain.service;
 
-import com.store.cafe.member.application.command.MemberWithdrawalCommand;
 import com.store.cafe.member.application.result.MemberWithdrawalCancelResult;
 import com.store.cafe.member.application.result.MemberWithdrawalResult;
-import com.store.cafe.util.DateUtil;
+import com.store.cafe.member.domain.exception.CannotWithdrawCancelException;
+import com.store.cafe.member.domain.exception.MemberNotFoundException;
 import com.store.cafe.member.domain.model.entity.MemberIdentity;
 import com.store.cafe.member.domain.model.entity.MemberIdentityRepository;
 import com.store.cafe.member.domain.model.entity.MemberStatus;
@@ -11,9 +11,8 @@ import com.store.cafe.member.domain.model.entity.MemberStatusRepository;
 import com.store.cafe.member.domain.model.entity.MemberWithdrawalRepository;
 import com.store.cafe.member.domain.model.entity.MemberWithdrawalSummary;
 import com.store.cafe.member.domain.model.enums.WithdrawalStatus;
+import com.store.cafe.util.DateUtil;
 import com.store.cafe.util.HashUtil;
-import com.store.cafe.member.domain.exception.CannotWithdrawCancelException;
-import com.store.cafe.member.domain.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,9 +28,7 @@ public class MemberWithdrawService {
     private final MemberWithdrawalRepository memberWithdrawalRepository;
 
     @Transactional
-    public MemberWithdrawalResult withdraw(MemberWithdrawalCommand command, ZonedDateTime requestedAt) {
-
-        Long memberUid = command.memberUid();
+    public MemberWithdrawalResult withdraw(Long memberUid, String reason, ZonedDateTime requestedAt) {
 
         MemberIdentity member = findMemberOrThrow(memberUid);
         MemberStatus memberStatus = findMemberStatusOrThrow(memberUid);
@@ -41,7 +38,7 @@ public class MemberWithdrawService {
         MemberWithdrawalSummary withdrawalSummary = createOrUpdateWithdrawal(
                 memberUid,
                 member.getLoginId(),
-                command.reason(),
+                reason,
                 requestedAt
         );
 

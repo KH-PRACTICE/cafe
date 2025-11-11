@@ -61,10 +61,10 @@ class MemberSignupServiceTest {
         command = new MemberSignupCommand(
                 "testUser",
                 "password123!",
-                "홍길동",
-                "010-1234-5678",
+                "정기혁",
+                "010-2248-0405",
                 "M",
-                "1990-01-01"
+                "1995-04-05"
         );
 
         memberIdentity = MemberIdentity.of("testUser");
@@ -82,7 +82,7 @@ class MemberSignupServiceTest {
         MemberSignupResult result = memberSignupService.signup(command);
 
         // then
-        assertThat(result.memberUid()).isNotNull();
+        assertThat(result.joinDate()).isNotNull();
         assertThat(result.loginId()).isEqualTo("testUser");
 
         verify(memberIdentityRepository).save(any(MemberIdentity.class));

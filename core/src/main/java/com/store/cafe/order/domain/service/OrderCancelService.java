@@ -45,9 +45,9 @@ public class OrderCancelService {
 
     public PaymentResult requestPaymentCancel(Long orderId) {
 
-        PaymentOrderHistory paymentOrderHistory = paymentHistoryService.getPaymentOrder(orderId);
+        PaymentOrderHistory paymentOrderHistory = paymentHistoryService.getSuccessPaymentOrder(orderId);
 
-        PaymentResult paymentResult = paymentGateway.cancelPayment(paymentOrderHistory.getTransactionId(), orderId);
+        PaymentResult paymentResult = paymentGateway.cancelPayment(paymentOrderHistory.getTransactionId(), paymentOrderHistory.getOrderId());
 
         eventPublisher.publishEvent(PaymentEvent.of(
                         paymentResult.orderId(),

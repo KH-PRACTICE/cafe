@@ -5,6 +5,9 @@ import com.store.cafe.member.domain.exception.CannotWithdrawCancelException;
 import com.store.cafe.member.domain.exception.CannotWithdrawException;
 import com.store.cafe.member.domain.exception.DuplicateLoginIdException;
 import com.store.cafe.member.domain.exception.MemberNotFoundException;
+import com.store.cafe.order.domain.exception.OrderCancelUnableException;
+import com.store.cafe.order.domain.exception.OrderItemNotFoundException;
+import com.store.cafe.order.domain.exception.OrderNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +35,13 @@ public class GlobalExceptionHandler {
                 .body(CommonResponseV1.error(e.getMessage()));
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<CommonResponseV1<Void>> handleAuthenticationException(AuthenticationException e) {
+        log.warn("AuthenticationException occurred: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(CommonResponseV1.error(e.getMessage()));
+    }
+
     @ExceptionHandler(CannotWithdrawException.class)
     public ResponseEntity<CommonResponseV1<Void>> handleCannotWithdrawException(CannotWithdrawException e) {
         log.warn("CannotWithdrawException occurred: {}", e.getMessage());
@@ -42,6 +52,27 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CannotWithdrawCancelException.class)
     public ResponseEntity<CommonResponseV1<Void>> handleCannotWithdrawCancelException(CannotWithdrawCancelException e) {
         log.warn("CannotWithdrawCancelException occurred: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(CommonResponseV1.error(e.getMessage()));
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<CommonResponseV1<Void>> handleOrderNotFoundException(OrderNotFoundException e) {
+        log.warn("OrderNotFoundException occurred: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(CommonResponseV1.error(e.getMessage()));
+    }
+
+    @ExceptionHandler(OrderItemNotFoundException.class)
+    public ResponseEntity<CommonResponseV1<Void>> handleOrderItemNotFoundException(OrderItemNotFoundException e) {
+        log.warn("OrderItemNotFoundException occurred: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(CommonResponseV1.error(e.getMessage()));
+    }
+
+    @ExceptionHandler(OrderCancelUnableException.class)
+    public ResponseEntity<CommonResponseV1<Void>> handleOrderCancelUnableException(OrderCancelUnableException e) {
+        log.warn("OrderCancelUnableException occurred: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(CommonResponseV1.error(e.getMessage()));
     }

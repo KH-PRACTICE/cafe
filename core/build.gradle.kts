@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":client"))
     implementation("org.springframework:spring-context")
     implementation("org.springframework:spring-tx")
     implementation("org.springframework.security:spring-security-crypto")

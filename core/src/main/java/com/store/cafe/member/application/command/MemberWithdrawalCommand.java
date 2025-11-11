@@ -1,8 +1,9 @@
 package com.store.cafe.member.application.command;
 
-public record MemberWithdrawalCommand(
-        Long memberUid,
-        String reason
+import java.time.ZonedDateTime;
 
+public record MemberWithdrawalCommand(
+        String reason,
+        ZonedDateTime requestedAt
 ) {
 }
