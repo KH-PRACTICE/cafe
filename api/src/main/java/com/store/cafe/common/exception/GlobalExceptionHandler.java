@@ -8,6 +8,9 @@ import com.store.cafe.member.domain.exception.MemberNotFoundException;
 import com.store.cafe.order.domain.exception.OrderCancelUnableException;
 import com.store.cafe.order.domain.exception.OrderItemNotFoundException;
 import com.store.cafe.order.domain.exception.OrderNotFoundException;
+import com.store.cafe.payment.domain.exception.PaymentHistoryNotFoundException;
+import com.store.cafe.product.domain.exception.OutOfProductStockException;
+import com.store.cafe.product.domain.exception.ProductNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +77,27 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CommonResponseV1<Void>> handleOrderCancelUnableException(OrderCancelUnableException e) {
         log.warn("OrderCancelUnableException occurred: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(CommonResponseV1.error(e.getMessage()));
+    }
+
+    @ExceptionHandler(PaymentHistoryNotFoundException.class)
+    public ResponseEntity<CommonResponseV1<Void>> handlePaymentHistoryNotFoundException(PaymentHistoryNotFoundException e) {
+        log.warn("PaymentHistoryNotFoundException occurred: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(CommonResponseV1.error(e.getMessage()));
+    }
+
+    @ExceptionHandler(OutOfProductStockException.class)
+    public ResponseEntity<CommonResponseV1<Void>> handleOutOfProductStockException(OutOfProductStockException e) {
+        log.warn("OutOfProductStockException occurred: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(CommonResponseV1.error(e.getMessage()));
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<CommonResponseV1<Void>> handleProductNotFoundException(ProductNotFoundException e) {
+        log.warn("ProductNotFoundException occurred: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(CommonResponseV1.error(e.getMessage()));
     }
 
