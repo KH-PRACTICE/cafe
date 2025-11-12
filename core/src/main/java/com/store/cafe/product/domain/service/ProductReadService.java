@@ -34,7 +34,7 @@ public class ProductReadService {
                 .map(result -> {
                     Product product = productMap.get(result.productId());
                     if (product == null) {
-                        throw new ProductNotFoundException("상품을 찾을 수 없습니다: " + result.productId());
+                        throw new ProductNotFoundException("Not Found Product. productId=" + result.productId());
                     }
                     return PricedOrderItem.of(
                             product.getProductId(),

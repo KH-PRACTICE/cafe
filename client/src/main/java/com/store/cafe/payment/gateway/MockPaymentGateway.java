@@ -1,7 +1,5 @@
 package com.store.cafe.payment.gateway;
 
-import com.store.cafe.order.application.result.PaymentResult;
-import com.store.cafe.payment.domain.service.PaymentGateway;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;

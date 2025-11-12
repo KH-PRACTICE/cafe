@@ -33,7 +33,7 @@ public class ProductStockService {
                 .map(cmd -> {
                     ProductStock stock = stockMap.get(cmd.productId());
                     if (stock == null) {
-                        throw new ProductNotFoundException("재고 정보 없음: " + cmd.productId());
+                        throw new ProductNotFoundException("Not Found Product Stock. productId=" + cmd.productId());
                     }
                     stock.decrease(cmd.quantity());
                     return new StockDecreaseResult(cmd.productId(), cmd.quantity());

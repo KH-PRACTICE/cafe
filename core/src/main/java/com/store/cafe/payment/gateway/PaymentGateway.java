@@ -1,6 +1,4 @@
-package com.store.cafe.payment.domain.service;
-
-import com.store.cafe.order.application.result.PaymentResult;
+package com.store.cafe.payment.gateway;
 
 public interface PaymentGateway {
 

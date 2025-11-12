@@ -90,11 +90,11 @@ public class Order {
     public void validateCancellable(Long memberUid) {
 
         if (!this.memberUid.equals(memberUid)) {
-            throw new OrderCancelUnableException("본인 주문만 취소 가능합니다. : " + this.memberUid + ", 요청자: " + memberUid);
+            throw new OrderCancelUnableException("Only the owner of the order can cancel it. : " + this.memberUid + ", requester: " + memberUid);
         }
 
         if (!status.canCancel()) {
-            throw new OrderCancelUnableException("주문 취소가 불가능한 상태입니다. 현재 상태: " + status);
+            throw new OrderCancelUnableException("The order cannot be canceled in its current status: " + status);
         }
     }
 }

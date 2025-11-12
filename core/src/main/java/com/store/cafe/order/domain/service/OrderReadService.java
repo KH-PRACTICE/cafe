@@ -20,14 +20,14 @@ public class OrderReadService {
 
     public Order getOrder(Long orderId) {
         return orderRepository.findByOrderId(orderId)
-                .orElseThrow(() -> new OrderNotFoundException("존재 하지 않는 주문 입니다: " + orderId));
+                .orElseThrow(() -> new OrderNotFoundException("Not Found Order. orderId=" + orderId));
     }
 
     public List<OrderItem> getOrderItems(Long orderId) {
         List<OrderItem> orderItems = orderItemRepository.findByOrderId(orderId);
 
         if (orderItems.isEmpty()) {
-            throw new OrderItemNotFoundException("주문 상품 정보가 없습니다. orderId=" + orderId);
+            throw new OrderItemNotFoundException("Not Found Order Items. orderId=" + orderId);
         }
 
         return orderItems;

@@ -28,6 +28,6 @@ public class PaymentOrderHistoryService {
 
     public PaymentOrderHistory getSuccessPaymentOrder(Long orderId) {
         return PaymentOrderRepository.findByOrderIdAndStatus(orderId, PaymentStatus.PAYMENT_SUCCESS)
-                .orElseThrow(() -> new PaymentHistoryNotFoundException("존재 하지 않는 결제 내역 입니다: " + orderId));
+                .orElseThrow(() -> new PaymentHistoryNotFoundException("Not Found Successful Payment History. orderId=" + orderId));
     }
 }

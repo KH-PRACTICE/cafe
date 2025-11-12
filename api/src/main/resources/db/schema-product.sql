@@ -6,9 +6,10 @@ CREATE TABLE product (
                          description TEXT,
                          created_at TIMESTAMP(6) NOT NULL,
                          updated_at TIMESTAMP(6) NOT NULL,
-                         PRIMARY KEY (product_id),
-                         INDEX idx_product_name (product_name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+                         PRIMARY KEY (product_id)
+);
+
+CREATE INDEX idx_product_name ON product(product_name);
 
 -- 상품 재고 테이블
 CREATE TABLE product_stock (
@@ -16,4 +17,4 @@ CREATE TABLE product_stock (
                                quantity BIGINT NOT NULL,
                                updated_at TIMESTAMP(6) NOT NULL,
                                PRIMARY KEY (product_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);

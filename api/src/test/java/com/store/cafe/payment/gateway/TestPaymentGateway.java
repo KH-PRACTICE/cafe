@@ -1,7 +1,5 @@
 package com.store.cafe.payment.gateway;
 
-import com.store.cafe.order.application.result.PaymentResult;
-import com.store.cafe.payment.domain.service.PaymentGateway;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +8,7 @@ import org.springframework.stereotype.Component;
  * 결제 성공 및 실패를 강제할 수 있는 기능을 제공합니다.
  */
 @Component
-@Primary  // 테스트 환경에서 이 빈이 우선적으로 사용됨
+@Primary
 public class TestPaymentGateway implements PaymentGateway {
 
     private static final ThreadLocal<Boolean> forcePaymentSuccess = new ThreadLocal<>();
@@ -33,7 +31,7 @@ public class TestPaymentGateway implements PaymentGateway {
     }
 
     /**
-     * 강제 설정을 초기화하고 기본 동작(성공)으로 되돌립니다.
+     * 강제 설정을 초기화
      */
     public void reset() {
         forcePaymentSuccess.remove();

@@ -5,7 +5,7 @@ CREATE TABLE member_identity (
                                  created_at TIMESTAMP(6) NOT NULL,
                                  update_dt TIMESTAMP(6) NOT NULL,
                                  PRIMARY KEY (member_uid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- 회원 비밀번호 테이블
 CREATE TABLE member_password (
@@ -14,7 +14,7 @@ CREATE TABLE member_password (
                                  created_at TIMESTAMP(6) NOT NULL,
                                  update_dt TIMESTAMP(6) NOT NULL,
                                  PRIMARY KEY (member_uid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- 회원 개인정보 테이블
 CREATE TABLE member_private (
@@ -26,7 +26,7 @@ CREATE TABLE member_private (
                                 created_at TIMESTAMP(6) NOT NULL,
                                 update_dt TIMESTAMP(6) NOT NULL,
                                 PRIMARY KEY (member_uid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- 회원 상태 테이블
 CREATE TABLE member_status (
@@ -35,7 +35,7 @@ CREATE TABLE member_status (
                                created_at TIMESTAMP(6) NOT NULL,
                                updated_at TIMESTAMP(6) NOT NULL,
                                PRIMARY KEY (member_uid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- 회원 탈퇴 감사 로그 테이블
 CREATE TABLE member_withdrawal_audit_log (
@@ -44,10 +44,11 @@ CREATE TABLE member_withdrawal_audit_log (
                                              login_id_hash VARCHAR(255) NOT NULL,
                                              event_type VARCHAR(30) NOT NULL,
                                              created_at TIMESTAMP(6) NOT NULL,
-                                             PRIMARY KEY (id),
-                                             INDEX idx_member_uid (member_uid),
-                                             INDEX idx_created_at (created_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+                                             PRIMARY KEY (id)
+);
+
+CREATE INDEX idx_member_uid ON member_withdrawal_audit_log(member_uid);
+CREATE INDEX idx_created_at ON member_withdrawal_audit_log(created_at);
 
 -- 회원 탈퇴 요약 테이블
 CREATE TABLE member_withdrawal_summary (
@@ -61,7 +62,8 @@ CREATE TABLE member_withdrawal_summary (
                                            reason VARCHAR(500),
                                            created_at TIMESTAMP(6) NOT NULL,
                                            updated_at TIMESTAMP(6) NOT NULL,
-                                           PRIMARY KEY (member_uid),
-                                           INDEX idx_withdrawal_summary_status (status),
-                                           INDEX idx_withdrawal_summary_scheduled_delete_at (scheduled_delete_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+                                           PRIMARY KEY (member_uid)
+);
+
+CREATE INDEX idx_withdrawal_summary_status ON member_withdrawal_summary(status);
+CREATE INDEX idx_withdrawal_summary_scheduled_delete_at ON member_withdrawal_summary(scheduled_delete_at);

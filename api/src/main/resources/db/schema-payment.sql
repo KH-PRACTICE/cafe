@@ -6,7 +6,8 @@ CREATE TABLE payment_order_history (
                                        status VARCHAR(30) NOT NULL,
                                        created_at TIMESTAMP(6),
                                        updated_at TIMESTAMP(6) NOT NULL,
-                                       PRIMARY KEY (payment_id),
-                                       INDEX idx_payment_order_id (order_id),
-                                       INDEX idx_transaction_id (transaction_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+                                       PRIMARY KEY (payment_id)
+);
+
+CREATE INDEX idx_payment_order_id ON payment_order_history(order_id);
+CREATE INDEX idx_transaction_id ON payment_order_history(transaction_id);

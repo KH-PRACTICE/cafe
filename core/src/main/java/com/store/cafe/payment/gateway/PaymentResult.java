@@ -1,4 +1,4 @@
-package com.store.cafe.order.application.result;
+package com.store.cafe.payment.gateway;
 
 import com.store.cafe.payment.domain.enums.PaymentStatus;
 

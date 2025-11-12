@@ -3,10 +3,13 @@ package com.store.cafe.order.application.facade;
 import com.store.cafe.order.application.command.OrderCommand;
 import com.store.cafe.order.application.result.OrderCancelResult;
 import com.store.cafe.order.application.result.OrderResult;
-import com.store.cafe.order.application.result.PaymentResult;
+import com.store.cafe.payment.gateway.PaymentResult;
 import com.store.cafe.order.domain.model.entity.Order;
 import com.store.cafe.order.domain.service.OrderCancelService;
 import com.store.cafe.order.domain.service.OrderTransactionService;
+import com.store.cafe.payment.domain.model.entity.PaymentOrderHistory;
+import com.store.cafe.payment.gateway.PaymentGateway;
+import com.store.cafe.payment.domain.service.PaymentOrderHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,10 @@ public class OrderFacadeImpl implements OrderFacade {
     private final OrderTransactionService orderTransactionService;
     private final OrderCancelService orderCancelService;
 
+    private final PaymentOrderHistoryService paymentOrderHistoryService;
+
+    private final PaymentGateway paymentGateway;
+
     @Override
     public OrderResult order(OrderCommand command) {
 
@@ -25,13 +32,23 @@ public class OrderFacadeImpl implements OrderFacade {
                 command.items()
         );
 
-        PaymentResult paymentResult = orderTransactionService.requestPayment(createdOrder.getOrderId());
+        PaymentResult paymentResult = paymentGateway.processPayment(createdOrder.getOrderId());
+
+        savePaymentOrderHistory(paymentResult);
 
         Order finalOrder = paymentResult.isPaymentSuccess()
-                ? orderTransactionService.completeOrder(createdOrder.getOrderId())
-                : orderTransactionService.failOrder(createdOrder.getOrderId());
+                ? orderTransactionService.recordPaymentAndComplete(paymentResult.orderId())
+                : orderTransactionService.failOrder(paymentResult.orderId());
 
         return OrderResult.from(finalOrder, paymentResult.isPaymentSuccess());
+    }
+
+    private void savePaymentOrderHistory(PaymentResult paymentResult) {
+        paymentOrderHistoryService.savePaymentOrder(
+                paymentResult.orderId(),
+                paymentResult.transactionId(),
+                paymentResult.status()
+        );
     }
 
     @Override
@@ -39,7 +56,10 @@ public class OrderFacadeImpl implements OrderFacade {
 
         orderCancelService.validateCancellable(orderId, memberUid);
 
-        PaymentResult paymentResult = orderCancelService.requestPaymentCancel(orderId);
+        PaymentOrderHistory paymentOrderHistory = paymentOrderHistoryService.getSuccessPaymentOrder(orderId);
+        PaymentResult paymentResult = paymentGateway.cancelPayment(paymentOrderHistory.getTransactionId(), paymentOrderHistory.getOrderId());
+
+        savePaymentOrderHistory(paymentResult);
 
         if (paymentResult.isPaymentFailed()) {
             return OrderCancelResult.failure(orderId);

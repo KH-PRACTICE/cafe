@@ -7,11 +7,12 @@ CREATE TABLE orders (
                         ordered_at TIMESTAMP(6) NOT NULL,
                         canceled_at TIMESTAMP(6),
                         updated_at TIMESTAMP(6) NOT NULL,
-                        PRIMARY KEY (order_id),
-                        INDEX idx_ord_member_uid (member_uid),
-                        INDEX idx_status (status),
-                        INDEX idx_ordered_at (ordered_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+                        PRIMARY KEY (order_id)
+);
+
+CREATE INDEX idx_ord_member_uid ON orders(member_uid);
+CREATE INDEX idx_status ON orders(status);
+CREATE INDEX idx_ordered_at ON orders(ordered_at);
 
 -- 주문 항목 테이블
 CREATE TABLE order_item (
@@ -21,7 +22,8 @@ CREATE TABLE order_item (
                             quantity BIGINT NOT NULL,
                             price BIGINT NOT NULL,
                             created_at TIMESTAMP(6) NOT NULL,
-                            PRIMARY KEY (order_item_id),
-                            INDEX idx_order_id (order_id),
-                            INDEX idx_product_id (product_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+                            PRIMARY KEY (order_item_id)
+);
+
+CREATE INDEX idx_order_id ON order_item(order_id);
+CREATE INDEX idx_product_id ON order_item(product_id);

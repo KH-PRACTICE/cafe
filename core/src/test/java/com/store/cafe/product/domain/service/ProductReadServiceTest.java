@@ -109,7 +109,6 @@ class ProductReadServiceTest {
         then(productRepository).should(times(1)).findByProductIds(anyList());
     }
 
-    // Helper method - Product에 productId를 설정
     private void setProductId(Product product, Long productId) {
         try {
             var field = Product.class.getDeclaredField("productId");
