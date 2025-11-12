@@ -21,7 +21,6 @@ import com.store.cafe.member.domain.model.entity.MemberWithdrawalRepository;
 import com.store.cafe.member.domain.model.entity.MemberWithdrawalSummary;
 import com.store.cafe.member.domain.model.enums.MemberStatusType;
 import com.store.cafe.member.domain.model.enums.WithdrawalStatus;
-import com.store.cafe.member.domain.service.MemberWithdrawService;
 import com.store.cafe.util.DateUtil;
 import com.store.cafe.util.HashUtil;
 import org.junit.jupiter.api.BeforeEach;

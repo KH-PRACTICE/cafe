@@ -1,8 +1,7 @@
 package com.store.cafe.payment.gateway;
 
-import com.store.cafe.payment.domain.enums.PaymentStatus;
-import com.store.cafe.payment.domain.service.PaymentGateway;
 import com.store.cafe.order.application.result.PaymentResult;
+import com.store.cafe.payment.domain.service.PaymentGateway;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
@@ -36,10 +35,9 @@ public class MockPaymentGateway implements PaymentGateway {
     @Override
     public PaymentResult cancelPayment(String transactionId, Long orderId) {
         return PaymentResult.cancelled(transactionId, orderId);
-
     }
 
     private String buildTransactionId(Long orderId) {
-        return "TXN -" + orderId;
+        return "TXN-" + orderId;
     }
 }
