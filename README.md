@@ -308,10 +308,12 @@ POST /api/v1/order/orders/{orderId}/cancel
 
 ```mermaid
 erDiagram
+    member_identity ||--|| member_password : "1:1"
     member_identity ||--|| member_private : "1:1"
     member_identity ||--|| member_status : "1:1"
     member_identity ||--o| member_withdrawal_summary : "1:0..1"
     member_identity ||--o{ orders : "1:N"
+    member_identity ||..o{ member_withdrawal_audit_log : "감사 로그"
 
     product ||--|| product_stock : "1:1"
     product ||--o{ order_item : "1:N"
@@ -324,6 +326,13 @@ erDiagram
         varchar login_id UK "로그인 ID"
         timestamp created_at "생성일시"
         timestamp update_dt "수정일시"
+    }
+
+    member_password {
+        bigint member_uid PK,FK "회원 UID"
+        varchar password_hash "암호화된 비밀번호"
+        timestamp created_at "생성일시"
+        timestamp updated_at "수정일시"
     }
 
     member_private {
@@ -398,15 +407,25 @@ erDiagram
         timestamp created_at "생성일시"
         timestamp updated_at "수정일시"
     }
+
+    member_withdrawal_audit_log {
+        bigint id PK "AUTO_INCREMENT"
+        bigint member_uid "회원 UID"
+        varchar login_id_hash "로그인 ID 해시"
+        varchar event_type "이벤트 타입"
+        timestamp created_at "생성일시 (Audit)"
+    }
 ```
 
 ### 테이블 설명
 
 #### 회원 도메인
 - **member_identity**: 회원 식별 정보 (로그인 ID, 회원번호)
+- **member_password**: 회원 비밀번호 (해시 저장)
 - **member_private**: 회원 개인정보 (이름, 전화번호, 생년월일, 성별) - 암호화 저장
 - **member_status**: 회원 상태 (활성/탈퇴 진행 중)
 - **member_withdrawal_summary**: 회원 탈퇴 요약 정보
+- **member_withdrawal_audit_log**: 회원 탈퇴 이력 감사 로그 (insert-only)
 
 #### 상품 도메인
 - **product**: 상품 정보 (상품명, 가격, 설명)
