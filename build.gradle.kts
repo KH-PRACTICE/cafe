@@ -36,7 +36,6 @@ subprojects {
 	}
 
 	dependencies {
-		// Lombok 버전도 BOM 에서 가져오게 버전 X로 둬도 됨
 		compileOnly("org.projectlombok:lombok")
 		annotationProcessor("org.projectlombok:lombok")
 
