@@ -60,12 +60,21 @@ graph TD
 ---
 
 ## 인증 대체
-과제 특성상 로그인 기능이 존재하지 않습니다. 따라서`X-Member-Uid` 헤더를 통해 현재 로그인된 사용자를 식별합니다. 인증 작업 또한 회원 상태 `MemberAuthService` 에서 회원 상태 체크로 대체합니다. 
+과제 특성상 로그인 기능이 존재하지 않습니다.
+따라서`X-Member-Uid` 헤더를 통해 현재 로그인된 사용자를 식별합니다. 인증 작업 또한 회원 상태 `MemberAuthService` 에서 회원 상태 체크로 대체합니다. 
 - **방식**: 헤더 기반 인증
 - **헤더**: `X-Member-Uid: {memberUid}`
 - **제외 경로 (인증 없이 접근 가능)**:
   - `/api/v1/member/signup` (회원가입)
   - `/api/v1/member/withdraw/cancel` (탈퇴 취소)
+ 
+
+
+**✅ 아래 API 는 **회원가입** 이 반드시 선행되어야 합니다.**   
+회원가입 후 member 테이블 조회하여 회원번호 확인 또는 회원가입 결과 Response 를 통해 확인 가능 (**[H2 Database](http://localhost:8080/h2-console/login.jsp?jsessionid=5eeed2b811b12af3d29b98c510f375da)** )
+- 주문 API
+- 주문 취소 API
+- 회원 탈퇴 API
 
 ---
 
