@@ -5,6 +5,8 @@
 ### jar 파일 다운로드
 **[⬇️ cafe-system.jar 다운로드](https://github.com/KH-PRACTICE/cafe/releases/download/v1.0.0/cafe-system.jar)**
 
+> 💡 다운로드가 안 되는 경우: [Releases 페이지에서 직접 다운로드](https://github.com/KH-PRACTICE/cafe/releases/tag/v1.0.0)
+
 ### 실행
 **Java 17 이상 필수**
 
@@ -12,7 +14,10 @@
 java -jar cafe-system.jar
 ```
 
+### Swagger UI
 - **[swagger](http://localhost:8080/swagger-ui/index.html)**
+
+### H2
 - **[H2 Database](http://localhost:8080/h2-console/login.jsp?jsessionid=5eeed2b811b12af3d29b98c510f375da)**
 
 ---
