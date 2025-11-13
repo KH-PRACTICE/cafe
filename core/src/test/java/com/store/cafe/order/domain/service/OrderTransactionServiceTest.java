@@ -84,11 +84,11 @@ class OrderTransactionServiceTest {
 
     @Test
     @DisplayName("주문 완료 처리 - 성공")
-    void recordPaymentAndComplete_success() {
+    void completeOrder_success() {
         Order mockOrder = Order.create(testMemberUid, List.of());
         when(orderReadService.getOrder(testOrderId)).thenReturn(mockOrder);
 
-        Order result = orderTransactionService.recordPaymentAndComplete(testOrderId);
+        Order result = orderTransactionService.completeOrder(testOrderId);
 
         assertThat(result).isNotNull();
         assertThat(result.getStatus()).isEqualTo(OrderStatus.COMPLETED);

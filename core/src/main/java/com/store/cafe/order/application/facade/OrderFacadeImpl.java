@@ -37,7 +37,7 @@ public class OrderFacadeImpl implements OrderFacade {
         savePaymentOrderHistory(paymentResult);
 
         Order finalOrder = paymentResult.isPaymentSuccess()
-                ? orderTransactionService.recordPaymentAndComplete(paymentResult.orderId())
+                ? orderTransactionService.completeOrder(paymentResult.orderId())
                 : orderTransactionService.failOrder(paymentResult.orderId());
 
         return OrderResult.from(finalOrder, paymentResult.isPaymentSuccess());

@@ -32,7 +32,7 @@ public class OrderTransactionService {
     }
 
     @Transactional
-    public Order recordPaymentAndComplete(Long orderId) {
+    public Order completeOrder(Long orderId) {
         Order order = orderReadService.getOrder(orderId);
         order.complete();
 

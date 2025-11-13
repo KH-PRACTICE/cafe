@@ -90,7 +90,7 @@ class OrderFacadeImplTest {
                 .thenReturn(testOrder);
         when(paymentGateway.processPayment(testOrder.getOrderId()))
                 .thenReturn(testSuccessPaymentResult);
-        when(orderTransactionService.recordPaymentAndComplete(testOrderId))
+        when(orderTransactionService.completeOrder(testOrderId))
                 .thenReturn(completedOrder);
 
         // when
@@ -104,7 +104,7 @@ class OrderFacadeImplTest {
         verify(orderTransactionService).createOrderWithStockDecrease(testMemberUid, testOrderCommand.items());
         verify(paymentGateway).processPayment(testOrder.getOrderId());
         verify(paymentOrderHistoryService).savePaymentOrder(testOrderId, testTransactionId, PaymentStatus.PAYMENT_SUCCESS);
-        verify(orderTransactionService).recordPaymentAndComplete(testOrderId);
+        verify(orderTransactionService).completeOrder(testOrderId);
     }
 
     @Test
