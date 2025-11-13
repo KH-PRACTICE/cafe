@@ -1,11 +1,32 @@
 # Cafe API 명세서
 
-## 개요
-카페 주문 시스템 REST API
+## 📦 다운로드
 
-**Base URL**: `/api/v1`
+### 방법 1: 직접 다운로드
+**[📥 cafe-system.jar 다운로드](https://github.com/KH-PRACTICE/cafe/releases/download/v1.0.0/cafe-system.jar)**
 
-**Swagger UI**: http://localhost:8080/swagger-ui/index.html
+### 방법 2: Releases 페이지에서 다운로드
+**[🔗 Releases 페이지로 이동](https://github.com/KH-PRACTICE/cafe/releases/tag/v1.0.0)**
+
+
+### 실행
+**Java 17 이상 필수**
+
+```bash
+java -jar cafe-system.jar
+```
+
+## 🛠️ 프로젝트 환경
+- Java 17
+- Spring Boot 3.5.7
+- H2 Database
+- Gradle
+
+### Swagger UI
+- **[swagger](http://localhost:8080/swagger-ui/index.html)**
+
+### H2
+- **[H2 Database](http://localhost:8080/h2-console/login.jsp?jsessionid=5eeed2b811b12af3d29b98c510f375da)**
 
 ---
 
@@ -38,13 +59,22 @@ graph TD
 
 ---
 
-## 인증
+## 인증 대체
+과제 특성상 로그인 기능이 존재하지 않습니다. 따라서`X-Member-Uid` 헤더를 통해 현재 로그인된 사용자를 식별합니다. 인증 작업 또한 회원 상태 `MemberAuthService` 에서 회원 상태 체크로 대체합니다. 
 - **방식**: 헤더 기반 인증
 - **헤더**: `X-Member-Uid: {memberUid}`
-- **설명**: 이 프로젝트는 과제 특성상 로그인 기능을 구현하지 않습니다. 대신 `X-Member-Uid` 헤더를 통해 현재 로그인된 사용자를 식별합니다.
-- **제외 경로**:
+- **제외 경로 (인증 없이 접근 가능)**:
   - `/api/v1/member/signup` (회원가입)
   - `/api/v1/member/withdraw/cancel` (탈퇴 취소)
+
+---
+
+## 결제 API
+실제 결제 API 가 아닌 Mock 으로 대체합니다.
+- **결제 승인**: 50:50 확률로 성공 또는 실패를 반환합니다.
+- **결제 취소**: 항상 성공으로 처리됩니다.
+- **테스트 환경**: 통합 테스트 환경에서는 결제 결과를 제어할 수 있는 테스트 전용 구현체를 사용하여,결제 성공 및 실패 시나리오를 검증합니다.
+
 
 ---
 
@@ -102,10 +132,10 @@ POST /api/v1/member/signup
 {
   "loginId": "user123",
   "password": "password123!",
-  "name": "홍길동",
-  "phone": "010-1234-5678",
+  "name": "정기혁",
+  "phone": "010-2248-0405",
   "gender": "M",
-  "birth": "1990-01-01"
+  "birth": "1995-04-05"
 }
 ```
 
@@ -284,12 +314,14 @@ POST /api/v1/order/orders/{orderId}/cancel
 - 타임존: Asia/Seoul (UTC+9)
 
 ### 회원 탈퇴
-- 탈퇴 신청 후 30일 뒤 실제 탈퇴 처리
-- 탈퇴 예정 기간 중 취소 가능
+- 탈퇴 신청 후 30일 뒤 실제 탈퇴 처리된다고 가정
+- 탈퇴 예정 기간 중 취소 가능 (30일 이내)
 
 ### 주문 상태
-- `ORDERED`: 주문 완료
-- `CANCELED`: 주문 취소
+- `ORDERED`: 주문 완료 상태
+- `CANCELED`: 주문 취소 상태
+- `PENDING`: 주문 보류 상태
+- `FAILED`: 주문 실패 상태
 
 ### 초기 데이터
 애플리케이션 시작 시 테스트를 위한 상품 데이터가 자동으로 로드됩니다. (`data-product.sql`)
@@ -329,14 +361,14 @@ erDiagram
     }
 
     member_password {
-        bigint member_uid PK,FK "회원 UID"
+        bigint member_uid PK "회원 UID"
         varchar password_hash "암호화된 비밀번호"
         timestamp created_at "생성일시"
         timestamp updated_at "수정일시"
     }
 
     member_private {
-        bigint member_uid PK,FK "회원 UID"
+        bigint member_uid PK "회원 UID"
         varchar encrypted_name "암호화된 이름"
         varchar encrypted_phone "암호화된 전화번호"
         varchar gender "성별 (M/F)"
@@ -346,14 +378,14 @@ erDiagram
     }
 
     member_status {
-        bigint member_uid PK,FK "회원 UID"
+        bigint member_uid PK "회원 UID"
         varchar status "상태 (ACTIVE/WITHDRAW_PROCESS)"
         timestamp created_at "생성일시"
         timestamp updated_at "수정일시"
     }
 
     member_withdrawal_summary {
-        bigint member_uid PK,FK "회원 UID"
+        bigint member_uid PK "회원 UID"
         varchar login_id_hash "로그인 ID 해시"
         varchar status "탈퇴 상태"
         timestamp requested_at "탈퇴 신청일시"
@@ -375,14 +407,14 @@ erDiagram
     }
 
     product_stock {
-        bigint product_id PK,FK "상품 ID"
+        bigint product_id PK "상품 ID"
         bigint quantity "재고 수량"
         timestamp updated_at "수정일시"
     }
 
     orders {
         bigint order_id PK "AUTO_INCREMENT"
-        bigint member_uid FK "회원 UID"
+        bigint member_uid "회원 UID"
         varchar status "주문 상태"
         bigint total_amount "총 금액"
         timestamp ordered_at "주문일시"
@@ -392,8 +424,8 @@ erDiagram
 
     order_item {
         bigint order_item_id PK "AUTO_INCREMENT"
-        bigint order_id FK "주문 ID"
-        bigint product_id FK "상품 ID"
+        bigint order_id "주문 ID"
+        bigint product_id "상품 ID"
         bigint quantity "수량"
         bigint price "가격"
         timestamp created_at "생성일시"
@@ -401,7 +433,7 @@ erDiagram
 
     payment_order_history {
         bigint payment_id PK "AUTO_INCREMENT"
-        bigint order_id FK "주문 ID"
+        bigint order_id "주문 ID"
         varchar transaction_id "거래 ID"
         varchar status "결제 상태"
         timestamp created_at "생성일시"
@@ -422,7 +454,7 @@ erDiagram
 #### 회원 도메인
 - **member_identity**: 회원 식별 정보 (로그인 ID, 회원번호)
 - **member_password**: 회원 비밀번호 (해시 저장)
-- **member_private**: 회원 개인정보 (이름, 전화번호, 생년월일, 성별) - 암호화 저장
+- **member_private**: 회원 개인정보 (이름, 전화번호, 생년월일, 성별) - 암호화 저장 (과제 특성상 암/복호화 KEY 및 IV 값은 하드코딩된 상태)
 - **member_status**: 회원 상태 (활성/탈퇴 진행 중)
 - **member_withdrawal_summary**: 회원 탈퇴 요약 정보
 - **member_withdrawal_audit_log**: 회원 탈퇴 이력 감사 로그 (insert-only)
@@ -438,4 +470,4 @@ erDiagram
 #### 결제 도메인
 - **payment_order_history**: 결제 내역 (거래 ID, 결제 상태)
 
-> **참고**: JPA 연관관계는 설정되어 있지 않지만, 논리적으로 위와 같은 관계가 존재합니다.
+> **참고**: 물리적인 FK 제약조건은 설정하지 않았으나, 논리적인 참조 관계는 존재하며, 참조 무결성은 애플리케이션 레벨에서 관리됩니다.
