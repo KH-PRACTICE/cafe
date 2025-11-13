@@ -1,11 +1,13 @@
 # Cafe API 명세서
 
-## 다운로드 및 실행
+## 📦 다운로드
 
-### jar 파일 다운로드
-**[⬇️ cafe-system.jar 다운로드](https://github.com/KH-PRACTICE/cafe/releases/download/v1.0.0/cafe-system.jar)**
+### 방법 1: 직접 다운로드
+**[📥 cafe-system.jar 다운로드](https://github.com/KH-PRACTICE/cafe/releases/download/v1.0.0/cafe-system.jar)**
 
-> 💡 다운로드가 안 되는 경우: [Releases 페이지에서 직접 다운로드](https://github.com/KH-PRACTICE/cafe/releases/tag/v1.0.0)
+### 방법 2: Releases 페이지에서 다운로드
+**[🔗 Releases 페이지로 이동](https://github.com/KH-PRACTICE/cafe/releases/tag/v1.0.0)**
+
 
 ### 실행
 **Java 17 이상 필수**
@@ -13,6 +15,12 @@
 ```bash
 java -jar cafe-system.jar
 ```
+
+## 🛠️ 프로젝트 환경
+- Java 17
+- Spring Boot 3.5.7
+- H2 Database
+- Gradle
 
 ### Swagger UI
 - **[swagger](http://localhost:8080/swagger-ui/index.html)**
