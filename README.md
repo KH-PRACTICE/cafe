@@ -12,7 +12,8 @@
 java -jar cafe-system.jar
 ```
 
-**Swagger UI**: http://localhost:8080/swagger-ui/index.html
+- **[swagger](http://localhost:8080/swagger-ui/index.html)**
+- **[H2 Database](http://localhost:8080/h2-console/login.jsp?jsessionid=5eeed2b811b12af3d29b98c510f375da)**
 
 ---
 
