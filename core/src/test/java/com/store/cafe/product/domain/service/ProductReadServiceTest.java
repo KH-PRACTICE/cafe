@@ -82,12 +82,12 @@ class ProductReadServiceTest {
         );
 
         given(productRepository.findByProductIds(anyList()))
-                .willReturn(List.of()); // 상품을 찾지 못함
+                .willReturn(List.of());
 
         // when & then
         assertThatThrownBy(() -> productReadService.attachPrices(stockResults))
                 .isInstanceOf(ProductNotFoundException.class)
-                .hasMessageContaining("상품을 찾을 수 없습니다: " + productId);
+                .hasMessageContaining("Not Found Product. productId=" + productId);
 
         then(productRepository).should(times(1)).findByProductIds(anyList());
     }

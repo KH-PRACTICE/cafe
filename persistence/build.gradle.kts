@@ -1,5 +1,9 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     java
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
 }
 
 dependencies {
@@ -10,4 +14,12 @@ dependencies {
     
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-test-autoconfigure")
+}
+
+tasks.named<BootJar>("bootJar") {
+    enabled = false
+}
+
+tasks.named<Jar>("jar") {
+    enabled = true
 }

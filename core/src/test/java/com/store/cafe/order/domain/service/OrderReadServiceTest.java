@@ -61,7 +61,7 @@ class OrderReadServiceTest {
 
         assertThatThrownBy(() -> orderReadService.getOrder(testOrderId))
                 .isInstanceOf(OrderNotFoundException.class)
-                .hasMessage("존재 하지 않는 주문 입니다: " + testOrderId);
+                .hasMessage("Not Found Order. orderId=" + testOrderId);
     }
 
     @Test
@@ -87,6 +87,6 @@ class OrderReadServiceTest {
 
         assertThatThrownBy(() -> orderReadService.getOrderItems(testOrderId))
                 .isInstanceOf(OrderItemNotFoundException.class)
-                .hasMessage("주문 상품 정보가 없습니다. orderId=" + testOrderId);
+                .hasMessage("Not Found Order Items. orderId=" + testOrderId);
     }
 }

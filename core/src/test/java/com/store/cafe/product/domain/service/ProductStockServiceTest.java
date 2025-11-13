@@ -87,7 +87,7 @@ class ProductStockServiceTest {
         // when & then
         assertThatThrownBy(() -> productStockService.decreaseStocks(testCommands))
                 .isInstanceOf(ProductNotFoundException.class)
-                .hasMessage("재고 정보 없음: 1");
+                .hasMessage("Not Found Product Stock");
     }
 
     @Test

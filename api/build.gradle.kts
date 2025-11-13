@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     java
     id("org.springframework.boot")
@@ -16,4 +18,13 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.14")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+tasks.named<BootJar>("bootJar") {
+    enabled = true
+    archiveFileName.set("cafe-system.jar")
+}
+
+tasks.named<Jar>("jar") {
+    enabled = false
 }

@@ -14,9 +14,6 @@ public class Aes256CryptoService implements CryptoService {
     private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
     private static final String ALGORITHM = "AES";
 
-    /**
-     *  환경 제약으로 인해 KEY와 IV 하드코딩 처리
-     */
     private static final String KEY = "12345678901234567890123456789012";
     private static final String IV  = "abcdefghijklmnop";
 

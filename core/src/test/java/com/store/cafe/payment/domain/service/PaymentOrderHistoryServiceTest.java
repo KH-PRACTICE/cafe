@@ -81,7 +81,7 @@ class PaymentOrderHistoryServiceTest {
         // when & then
         assertThatThrownBy(() -> paymentOrderHistoryService.getSuccessPaymentOrder(testOrderId))
                 .isInstanceOf(PaymentHistoryNotFoundException.class)
-                .hasMessageContaining("존재 하지 않는 결제 내역 입니다: " + testOrderId);
+                .hasMessageContaining("Not Found Successful Payment History. orderId=" + testOrderId);
         
         verify(paymentOrderRepository).findByOrderIdAndStatus(testOrderId, PaymentStatus.PAYMENT_SUCCESS);
     }
