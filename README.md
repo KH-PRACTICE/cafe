@@ -1,9 +1,16 @@
 # Cafe API 명세서
 
-## 개요
-카페 주문 시스템 REST API
+## 다운로드 및 실행
 
-**Base URL**: `/api/v1`
+### jar 파일 다운로드
+**[⬇️ cafe-system.jar 다운로드](https://github.com/KH-PRACTICE/cafe/releases/download/v1.0.0/cafe-system.jar)**
+
+### 실행
+**Java 17 이상 필수**
+
+```bash
+java -jar cafe-system.jar
+```
 
 **Swagger UI**: http://localhost:8080/swagger-ui/index.html
 
