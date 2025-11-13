@@ -454,7 +454,7 @@ erDiagram
 #### 회원 도메인
 - **member_identity**: 회원 식별 정보 (로그인 ID, 회원번호)
 - **member_password**: 회원 비밀번호 (해시 저장)
-- **member_private**: 회원 개인정보 (이름, 전화번호, 생년월일, 성별) - 암호화 저장
+- **member_private**: 회원 개인정보 (이름, 전화번호, 생년월일, 성별) - 암호화 저장 (과제 특성상 암/복호화 KEY 및 IV 값은 하드코딩된 상태)
 - **member_status**: 회원 상태 (활성/탈퇴 진행 중)
 - **member_withdrawal_summary**: 회원 탈퇴 요약 정보
 - **member_withdrawal_audit_log**: 회원 탈퇴 이력 감사 로그 (insert-only)
